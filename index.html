@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page Title</title>
+  <meta charset="UTF-8"/>
+</head>
+<body>
+  <script>
+      // a prompt to ask the user what they would like choose for a game of rock paper scissors.
+      let playerSelection = window.prompt('Rock, Paper, or Scissors?').toLowerCase();
+    
+      // a function called computerPlay that randomnly returns rock, paper, or scissors
+      function computerPlay(){
+      let compChoice = Math.random();
+        if (compChoice < .34){
+          return 'rock';
+        }else if (compChoice <= .67){
+          return 'paper';
+        }else{
+          return 'scissors';
+        }
+      }
+    //a variable for the computer's score and the users score
+      let userScore = 0;
+      let compScore = 0;
+    // a function called playRound that plays a single round of rps.  the two parameters
+    // are playerSelection and computerSelection.  the function takes those and returns a stirng
+    // declaring the winner.  
+
+      function playRound(playerSelection,computerSelection){
+        //if rock
+        if(playerSelection == 'rock'){
+          if(computerSelection == 'scissors'){
+            ++userScore;
+            return 'You win!';
+            
+          }else if(computerSelection == 'paper'){
+            ++compScore;
+            return 'You lose:(';
+            
+          }else if(computerSelection == 'rock'){
+            return 'It is a tie!';
+          }else{
+            return 'Opps!';
+          }
+        }
+        //if paper
+        else if(playerSelection == 'paper'){
+          if(computerSelection == 'rock'){
+            ++userScore;
+            return 'You win!';
+            
+          }else if(computerSelection == 'scissors'){
+            ++compScore;
+            return 'You lose:(';
+            
+          }else if(computerSelection == 'paper'){
+            return 'It is a tie!';
+          }else{
+            return 'Opps!';
+          }
+        }
+        // ifscissors
+        else if(playerSelection == 'scissors'){
+          if(computerSelection == 'paper'){
+            ++userScore;
+            return 'You win!';
+            
+          }else if(computerSelection == 'rock'){
+            ++compScore;
+            return 'You lose:(';
+            
+          }else if(computerSelection == 'scissors'){
+            return 'It is a tie!';
+          }else{
+            return 'Opps!';
+          }
+        }
+      }
+      
+   
+      let computerSelection = computerPlay();
+      function game(){
+        playRound(playerSelection,computerSelection);
+        playRound(playerSelection,computerSelection);
+        playRound(playerSelection,computerSelection);
+        playRound(playerSelection,computerSelection);
+        playRound(playerSelection,computerSelection);
+        console.log(`The computer scored ${compScore}, and you scored ${userScore}`);
+      }
+   
+  </script>
+</body>
+</html>
