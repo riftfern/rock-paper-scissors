@@ -5,9 +5,28 @@
   <meta charset="UTF-8"/>
 </head>
 <body>
+
+  <button id ='rock'>Rock</button>
+  <button id ='paper'>Paper</button>
+  <button id ='scissors'>Scissors</button>
+
+  
   <script>
       // a prompt to ask the user what they would like choose for a game of rock paper scissors.
-      let playerSelection = window.prompt('Rock, Paper, or Scissors?').toLowerCase();
+      alert('Choose Rock, Paper, or Scissors');
+      let playerSelection = '';
+
+      const buttons = document.querySelectorAll('button');
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          playerSelection = button.id;
+        });
+      });
+
+      const results = document.createElement('div');
+      results.classList.add('results');
+
     
       // a function called computerPlay that randomnly returns rock, paper, or scissors
       function computerPlay(){
