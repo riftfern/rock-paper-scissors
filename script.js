@@ -1,6 +1,21 @@
 // these two varibles will passed as parameters in the playround function
-let playerChoice = '';
-let compChoice = '';
+let computerSelection;
+let playerSelection;
+let computerScore = 0;
+let playerScore = 0;
+
+const buttons = document.querySelectorAll('button');
+const body = document.querySelector("body");
+const results = document.createElement('div');
+
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        playerChoice = button.id;
+        playRound(playerChoice,compChoice);
+    });
+  });
+
+
 
 // a function called computerPlay that randomnly returns rock, paper, or scissors
 function computerPlay(){
@@ -13,28 +28,18 @@ function computerPlay(){
         return 'scissors';
       }
     }
+let computerSelection = computerPlay();
 
-//two variable for the computer's score and the users score
-let userScore = 0;
-let compScore = 0;
 
-const buttons = document.querySelectorAll('button');
-
-buttons.forEach((button) => {
-    button.addEventListener('click', () => {
-        playerChoice = button.id;
-        playRound(playerChoice,compChoice);
-    });
-  });
-
-const results = document.createElement('div');
 results.classList.add('results');
+
+
 
 function playRound(playerSelection,computerSelection){
     //if rock
     if(playerSelection == 'rock'){
       if(computerSelection == 'scissors'){
-        userScore++;
+        ++playerScore;
         results.textContent = `You win!  You have ${userScore}, and the computer has ${compScore}`;
         
       }else if(computerSelection == 'paper'){
@@ -50,7 +55,7 @@ function playRound(playerSelection,computerSelection){
     //if paper
     else if(playerSelection == 'paper'){
       if(computerSelection == 'rock'){
-        ++userScore;
+        ++playerScore;
         return 'You win!';
         
       }else if(computerSelection == 'scissors'){
@@ -66,7 +71,7 @@ function playRound(playerSelection,computerSelection){
     // ifscissors
     else if(playerSelection == 'scissors'){
       if(computerSelection == 'paper'){
-        ++userScore;
+        ++playerScore;
         return 'You win!';
         
       }else if(computerSelection == 'rock'){
@@ -79,4 +84,20 @@ function playRound(playerSelection,computerSelection){
         return 'Opps!';
       }
     }
+    if(playerScore === 5 || computerScore === 5){
+        declareWinner();
+    }
   }
+
+
+function displayResults(str){
+    results.textContent = str;
+}
+
+function declareWinner(){
+    if(playerScore > computerScore){
+        results.textContent = 'You Won!';
+    }else if(computerScore < playerScore){
+        results.textContent = 'You Lost!';
+    }
+}
