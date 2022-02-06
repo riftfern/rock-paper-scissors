@@ -1,103 +1,117 @@
-// these two varibles will passed as parameters in the playround function
-let computerSelection;
-let playerSelection;
-let computerScore = 0;
 let playerScore = 0;
+let compScore = 0;
+let roundWinner = '';
 
-const buttons = document.querySelectorAll('button');
-const body = document.querySelector("body");
-const results = document.createElement('div');
-
-buttons.forEach((button) => {
-    button.addEventListener('click', () => {
-        playerChoice = button.id;
-        playRound(playerChoice,compChoice);
-    });
-  });
-
-
-
-// a function called computerPlay that randomnly returns rock, paper, or scissors
-function computerPlay(){
-    let compChoice = Math.random();
-      if (compChoice < .34){
-        return 'rock';
-      }else if (compChoice <= .67){
-        return 'paper';
-      }else{
-        return 'scissors';
-      }
+function playRound(playerSelection, computerSelection) {
+    if (playerSelection === computerSelection) {
+      roundWinner = 'tie'
     }
-let computerSelection = computerPlay();
-
-
-results.classList.add('results');
-
-
-
-function playRound(playerSelection,computerSelection){
-    //if rock
-    if(playerSelection == 'rock'){
-      if(computerSelection == 'scissors'){
-        ++playerScore;
-        results.textContent = `You win!  You have ${userScore}, and the computer has ${compScore}`;
-        
-      }else if(computerSelection == 'paper'){
-        ++compScore;
-        return 'You lose:(';
-        
-      }else if(computerSelection == 'rock'){
-        return 'It is a tie!';
-      }else{
-        return 'Opps!';
-      }
+    if (
+      (playerSelection === 'rock' && computerSelection === 'scissors') ||
+      (playerSelection === 'scissors' && computerSelection === 'paper') ||
+      (playerSelection === 'paper' && computerSelection === 'rock')
+    ) {
+      playerScore++;
+      roundWinner = 'player'
+      updateScore();
     }
-    //if paper
-    else if(playerSelection == 'paper'){
-      if(computerSelection == 'rock'){
-        ++playerScore;
-        return 'You win!';
-        
-      }else if(computerSelection == 'scissors'){
-        ++compScore;
-        return 'You lose:(';
-        
-      }else if(computerSelection == 'paper'){
-        return 'It is a tie!';
-      }else{
-        return 'Opps!';
-      }
+    if (
+      (computerSelection === 'rock' && playerSelection === 'scissors') ||
+      (computerSelection === 'scissors' && playerSelection === 'paper') ||
+      (computerSelection === 'paper' && playerSelection === 'rock')
+    ) {
+      compScore++;
+      roundWinner = 'computer'
+      updateScore();
     }
-    // ifscissors
-    else if(playerSelection == 'scissors'){
-      if(computerSelection == 'paper'){
-        ++playerScore;
-        return 'You win!';
-        
-      }else if(computerSelection == 'rock'){
-        ++compScore;
-        return 'You lose:(';
-        
-      }else if(computerSelection == 'scissors'){
-        return 'It is a tie!';
-      }else{
-        return 'Opps!';
-      }
-    }
-    if(playerScore === 5 || computerScore === 5){
-        declareWinner();
-    }
+    updateScoreMessage(roundWinner, playerSelection, computerSelection)
   }
 
 
-function displayResults(str){
-    results.textContent = str;
+const buttons = document.querySelectorAll('button');
+const body = document.querySelector("body");
+const results = document.querySelector('#results');
+const playerScoreCard = document.querySelector('#playerScore');
+const computerScoreCard = document.querySelector('#computerScore');
+const content  = document.createElement('div');
+content.classList.add('results');
+results.appendChild(content);
+const winnerCard = document.querySelector('#winner');
+  
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        playerSelection = button.id;
+        playRound(playerSelection,computerPlay());
+
+        if(playerScore === 5 || compScore === 5){
+            declareWinner();
+        }
+
+    });
+  });
+
+function computerPlay() {
+    let randomNumber = Math.floor(Math.random() * 3)
+    switch (randomNumber) {
+      case 0:
+        return 'rock'
+      case 1:
+        return 'paper'
+      case 2:
+        return 'scissors'
+    }
+}
+  
+function isGameOver() {
+    return playerScore === 5 || compScore === 5
+  }
+
+function updateScoreMessage(winner, playerSelection, computerSelection) {
+    if (winner === 'player') {
+      results.textContent = `${capitalizeFirstLetter(
+        playerSelection
+      )} beats ${computerSelection.toLowerCase()}`
+      return
+    }
+    if (winner === 'computer') {
+     results.textContent = `${capitalizeFirstLetter(
+        playerSelection
+      )} is beaten by ${computerSelection.toLowerCase()}`
+      return
+    }
+  
+    results.textContent = `${capitalizeFirstLetter(
+      playerSelection
+    )} ties with ${computerSelection.toLowerCase()}`
+  }
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+}
+
+function updateScore() {
+    if (roundWinner === 'tie') {
+      score.textContent = "It's a tie!"
+    } else if (roundWinner === 'player') {
+      playerScoreCard.textContent = 'You won!'
+    } else if (roundWinner === 'computer') {
+      computerScoreCard.textContent = 'You lost!'
+    }
+  
+    playerScoreCard.textContent = `Player: ${playerScore}`
+    computerScoreCard.textContent = `Computer: ${compScore}`
+
+    if(playerScore === 5){
+        winnerCard.textContent = 'You Won!';
+    }else if(compScore === 5){
+        winnerCard.textContent = 'You Lost!';
+    }
 }
 
 function declareWinner(){
     if(playerScore > computerScore){
-        results.textContent = 'You Won!';
+        winnerCard.textContent = 'You Won!';
     }else if(computerScore < playerScore){
-        results.textContent = 'You Lost!';
+        winnerCard.textContent = 'You Lost!';
     }
 }
